@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Go2RTC - RTSP to WebRTC converter
+  go2rtc:
+    image: alexxit/go2rtc:latest
+    container_name: go2rtc
+    ports:
+      - "1984:1984"  # Web UI and API
+      - "8555:8555"  # RTSP port
+    volumes:
+      - ./config/go2rtc/go2rtc.yaml:/config/go2rtc.yaml
+    environment:
+      - GO2RTC_CONFIG=/config/go2rtc.yaml
+    restart: unless-stopped
+    networks:
+      - webrtc-network
+
+  # Coturn - TURN/STUN server
+  coturn:
+    image: coturn/coturn:latest
+    container_name: coturn
+    ports:
+      - "3478:3478/udp"  # STUN/TURN UDP
+      - "3478:3478/tcp"  # STUN/TURN TCP
+      - "5349:5349/tcp"  # TURN TLS
+      - "5349:5349/udp"  # TURN DTLS
+      - "49152-49200:49152-49200/udp"  # TURN relay ports
+    volumes:
+      - ./config/coturn/turnserver.conf:/etc/coturn/turnserver.conf
+    command: ["-c", "/etc/coturn/turnserver.conf"]
+    restart: unless-stopped
+    networks:
+      - webrtc-network
+
+  # Nginx for serving Angular frontend
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend/dist/rtsp-webrtc-viewer:/usr/share/nginx/html:ro
+      - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - go2rtc
+    restart: unless-stopped
+    networks:
+      - webrtc-network
+
+networks:
+  webrtc-network:
+    driver: bridge

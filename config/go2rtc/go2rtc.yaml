@@ -1,0 +1,46 @@
+# Go2RTC Configuration for RTSP to WebRTC streaming
+
+# Streams configuration
+streams:
+  # Example camera stream - replace with your camera's RTSP URL
+  camera1:
+    - rtsp://admin:password@192.168.1.100:554/stream1
+
+  # You can add more cameras here
+  # camera2:
+  #   - rtsp://user:pass@192.168.1.101:554/stream
+
+# WebRTC configuration with TURN support
+webrtc:
+  listen: ":8555"
+
+  # ICE servers configuration (STUN and TURN)
+  ice_servers:
+    # STUN server
+    - urls:
+        - "stun:coturn:3478"
+
+    # TURN server (using coturn container)
+    - urls:
+        - "turn:coturn:3478?transport=udp"
+        - "turn:coturn:3478?transport=tcp"
+      username: "turnuser"
+      credential: "turnpassword"
+
+  # Candidates configuration - replace with your server's public IP
+  # candidates:
+  #   - stun:8555
+  #   - <your-public-ip>:8555
+
+# API configuration
+api:
+  listen: ":1984"
+
+# RTSP server (optional, for re-streaming)
+rtsp:
+  listen: ":8554"
+
+# Log level: trace, debug, info, warn, error
+log:
+  level: info
+  format: text

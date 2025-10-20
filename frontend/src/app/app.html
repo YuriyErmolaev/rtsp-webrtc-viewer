@@ -1,0 +1,21 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title() }}</h1>
+    <p>Просмотр RTSP потоков через WebRTC с поддержкой TURN сервера</p>
+  </header>
+
+  <main class="app-main">
+    <app-video-player
+      streamName="camera1"
+      apiUrl="/api"
+    ></app-video-player>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      Настройте ваш RTSP поток в файле <code>config/go2rtc/go2rtc.yaml</code>
+    </p>
+  </footer>
+</div>
+
+<router-outlet />

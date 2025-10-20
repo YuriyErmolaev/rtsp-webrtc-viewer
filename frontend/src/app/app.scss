@@ -1,0 +1,64 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app-header {
+  text-align: center;
+  padding: 40px 20px;
+  color: white;
+
+  h1 {
+    margin: 0 0 16px 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+}
+
+.app-main {
+  flex: 1;
+  padding: 20px;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 20px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  code {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .app-header {
+    padding: 24px 12px;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+}
