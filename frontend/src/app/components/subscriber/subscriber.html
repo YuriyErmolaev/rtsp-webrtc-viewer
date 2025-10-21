@@ -1,0 +1,86 @@
+<div class="subscriber-container">
+  <h2>Subscriber (Сабскрайбер)</h2>
+  <p class="description">Создайте offer, получите answer от publisher, смотрите видео</p>
+
+  <!-- Video Player -->
+  <div class="video-section">
+    <video #remoteVideo class="remote-video" autoplay playsinline controls></video>
+    <div class="video-overlay" *ngIf="!isConnected">
+      <div class="overlay-content">
+        <p *ngIf="!isOfferCreated">Нажмите "Создать Offer" для начала</p>
+        <p *ngIf="isOfferCreated && !answerFromPublisher">Ожидание answer от publisher...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TURN Settings -->
+  <div class="settings-section" *ngIf="!isOfferCreated">
+    <h3>Настройки TURN</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="turnUrl">TURN сервер</label>
+        <input id="turnUrl" type="text" [(ngModel)]="turnServerUrl" class="form-input" placeholder="localhost:3480" />
+      </div>
+      <div class="form-group">
+        <label for="turnUser">Логин</label>
+        <input id="turnUser" type="text" [(ngModel)]="turnUsername" class="form-input" placeholder="turnuser" />
+      </div>
+      <div class="form-group">
+        <label for="turnPass">Пароль</label>
+        <input id="turnPass" type="password" [(ngModel)]="turnPassword" class="form-input" placeholder="turnpassword" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Offer Button -->
+  <div class="controls" *ngIf="!isOfferCreated">
+    <button (click)="createOffer()" class="btn btn-primary">
+      Создать Offer
+    </button>
+  </div>
+
+  <!-- Offer Output -->
+  <div class="exchange-section" *ngIf="isOfferCreated && offerToPublisher">
+    <h3>Шаг 1: Скопируйте Offer для Publisher</h3>
+    <textarea
+      [value]="offerToPublisher"
+      class="exchange-textarea"
+      readonly
+      rows="8"
+    ></textarea>
+    <button (click)="copyOffer()" class="btn btn-secondary">
+      📋 Копировать Offer
+    </button>
+  </div>
+
+  <!-- Answer Input -->
+  <div class="exchange-section" *ngIf="isOfferCreated && !isConnected">
+    <h3>Шаг 2: Получите Answer от Publisher</h3>
+    <textarea
+      [(ngModel)]="answerFromPublisher"
+      class="exchange-textarea"
+      placeholder="Вставьте сюда answer от publisher (JSON)"
+      rows="8"
+    ></textarea>
+  </div>
+
+  <!-- Apply Answer Button -->
+  <div class="controls" *ngIf="isOfferCreated && answerFromPublisher.trim() && !isConnected">
+    <button (click)="applyAnswer()" class="btn btn-success">
+      Применить Answer и Запустить Видео
+    </button>
+  </div>
+
+  <!-- Reset Button -->
+  <div class="controls" *ngIf="isOfferCreated">
+    <button (click)="closePeerConnection()" class="btn btn-danger">
+      Сбросить и Начать Заново
+    </button>
+  </div>
+
+  <!-- Status Messages -->
+  <div class="status-section">
+    <p *ngIf="statusMessage" class="status-info">ℹ️ {{ statusMessage }}</p>
+    <p *ngIf="errorMessage" class="status-error">❌ {{ errorMessage }}</p>
+  </div>
+</div>

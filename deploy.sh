@@ -18,9 +18,13 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-# Check if docker-compose is available
-if ! command -v docker-compose &> /dev/null; then
-    echo -e "${RED}❌ docker-compose is not installed.${NC}"
+# Check if docker compose is available (try both v2 and v1)
+if docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+elif command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+else
+    echo -e "${RED}❌ Docker Compose is not installed.${NC}"
     exit 1
 fi
 
@@ -39,7 +43,7 @@ npm run build
 cd ..
 
 # Check if build was successful
-if [ ! -d "frontend/dist/rtsp-webrtc-viewer/browser" ]; then
+if [ ! -f "frontend/dist/rtsp-webrtc-viewer/browser/index.html" ]; then
     echo -e "${RED}❌ Build failed. Please check the errors above.${NC}"
     exit 1
 fi
@@ -48,18 +52,18 @@ echo -e "${GREEN}✅ Frontend build completed successfully!${NC}"
 
 # Step 2: Stop existing containers
 echo -e "${YELLOW}🛑 Stopping existing containers...${NC}"
-docker-compose down
+$DOCKER_COMPOSE down
 
 # Step 3: Start Docker containers
 echo -e "${YELLOW}🐳 Starting Docker containers...${NC}"
-docker-compose up -d
+$DOCKER_COMPOSE up -d
 
 # Wait for containers to be healthy
 echo -e "${YELLOW}⏳ Waiting for containers to start...${NC}"
 sleep 5
 
 # Check container status
-if docker-compose ps | grep -q "Up"; then
+if $DOCKER_COMPOSE ps | grep -q "Up"; then
     echo -e "${GREEN}✅ Containers started successfully!${NC}"
     echo ""
     echo -e "${GREEN}🎉 Deployment completed!${NC}"
@@ -67,14 +71,14 @@ if docker-compose ps | grep -q "Up"; then
     echo "📍 Access points:"
     echo "   - Angular UI:     http://localhost:8080"
     echo "   - Go2RTC Web UI:  http://localhost:1984"
-    echo "   - TURN Server:    localhost:3478"
+    echo "   - TURN Server:    localhost:3480"
     echo ""
     echo "📝 View logs:"
-    echo "   docker-compose logs -f"
+    echo "   $DOCKER_COMPOSE logs -f"
     echo ""
     echo "🛑 Stop containers:"
-    echo "   docker-compose down"
+    echo "   $DOCKER_COMPOSE down"
 else
-    echo -e "${RED}❌ Some containers failed to start. Check logs with: docker-compose logs${NC}"
+    echo -e "${RED}❌ Some containers failed to start. Check logs with: $DOCKER_COMPOSE logs${NC}"
     exit 1
 fi

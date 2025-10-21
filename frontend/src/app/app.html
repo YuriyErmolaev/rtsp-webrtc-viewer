@@ -1,18 +1,21 @@
 <div class="app-container">
   <header class="app-header">
     <h1>{{ title() }}</h1>
-    <p>Просмотр RTSP потоков через WebRTC с поддержкой TURN сервера</p>
+    <p>WebRTC Publisher/Subscriber с TURN сервером</p>
+
+    <nav class="app-nav">
+      <a routerLink="/publisher" routerLinkActive="active">Publisher</a>
+      <a routerLink="/subscriber" routerLinkActive="active">Subscriber</a>
+    </nav>
   </header>
 
   <main class="app-main">
-    <app-video-player></app-video-player>
+    <router-outlet />
   </main>
 
   <footer class="app-footer">
     <p>
-      Введите настройки RTSP камеры и TURN сервера выше и нажмите "Подключить"
+      Manual WebRTC Exchange - копируйте offer/answer между вкладками
     </p>
   </footer>
 </div>
-
-<router-outlet />

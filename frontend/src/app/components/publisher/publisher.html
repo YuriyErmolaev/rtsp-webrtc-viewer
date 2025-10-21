@@ -1,0 +1,76 @@
+<div class="publisher-container">
+  <h2>Publisher (Паблишер)</h2>
+  <p class="description">Включите веб-камеру, получите offer от subscriber, создайте answer</p>
+
+  <!-- Video Preview -->
+  <div class="video-section">
+    <video #localVideo class="local-video" autoplay muted playsinline></video>
+  </div>
+
+  <!-- Camera Controls -->
+  <div class="controls">
+    <button *ngIf="!isCameraStarted" (click)="startCamera()" class="btn btn-primary">
+      Запустить камеру
+    </button>
+    <button *ngIf="isCameraStarted" (click)="stopCamera()" class="btn btn-danger">
+      Остановить камеру
+    </button>
+  </div>
+
+  <!-- TURN Settings -->
+  <div class="settings-section" *ngIf="isCameraStarted">
+    <h3>Настройки TURN</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="turnUrl">TURN сервер</label>
+        <input id="turnUrl" type="text" [(ngModel)]="turnServerUrl" class="form-input" placeholder="localhost:3480" />
+      </div>
+      <div class="form-group">
+        <label for="turnUser">Логин</label>
+        <input id="turnUser" type="text" [(ngModel)]="turnUsername" class="form-input" placeholder="turnuser" />
+      </div>
+      <div class="form-group">
+        <label for="turnPass">Пароль</label>
+        <input id="turnPass" type="password" [(ngModel)]="turnPassword" class="form-input" placeholder="turnpassword" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Offer Input -->
+  <div class="exchange-section" *ngIf="isCameraStarted">
+    <h3>Шаг 1: Получите Offer от Subscriber</h3>
+    <textarea
+      [(ngModel)]="offerFromSubscriber"
+      class="exchange-textarea"
+      placeholder="Вставьте сюда offer от subscriber (JSON)"
+      rows="8"
+    ></textarea>
+  </div>
+
+  <!-- Create Answer Button -->
+  <div class="controls" *ngIf="isCameraStarted && offerFromSubscriber.trim()">
+    <button (click)="createAnswer()" class="btn btn-success">
+      Создать Answer
+    </button>
+  </div>
+
+  <!-- Answer Output -->
+  <div class="exchange-section" *ngIf="answerToSubscriber">
+    <h3>Шаг 2: Скопируйте Answer для Subscriber</h3>
+    <textarea
+      [value]="answerToSubscriber"
+      class="exchange-textarea"
+      readonly
+      rows="8"
+    ></textarea>
+    <button (click)="copyAnswer()" class="btn btn-secondary">
+      📋 Копировать Answer
+    </button>
+  </div>
+
+  <!-- Status Messages -->
+  <div class="status-section">
+    <p *ngIf="statusMessage" class="status-info">ℹ️ {{ statusMessage }}</p>
+    <p *ngIf="errorMessage" class="status-error">❌ {{ errorMessage }}</p>
+  </div>
+</div>

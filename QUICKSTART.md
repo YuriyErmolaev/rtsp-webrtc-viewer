@@ -18,7 +18,6 @@
 ### Шаг 2: Запустите проект
 
 ```bash
-cd /home/yuriy/projects/rtsp-webrtc-viewer
 ./deploy.sh
 ```
 
@@ -30,7 +29,7 @@ cd /home/yuriy/projects/rtsp-webrtc-viewer
 
 2. В форме настроек введите:
    - **RTSP URL**: `rtsp://Vu5RqXpP:5K5mjQfVt4HUDsrK@192.168.0.138:554/live/ch0`
-   - **TURN сервер**: `localhost:3478` (для локальной сети)
+   - **TURN сервер**: `localhost:3480` (для локальной сети)
    - **TURN логин**: `turnuser`
    - **TURN пароль**: `turnpassword`
 

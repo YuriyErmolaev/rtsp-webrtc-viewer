@@ -20,7 +20,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   // User settings
   rtspUrl: string = 'rtsp://Vu5RqXpP:5K5mjQfVt4HUDsrK@192.168.0.138:554/live/ch0';
-  turnServerUrl: string = 'localhost:3478';
+  turnServerUrl: string = 'localhost:3480';
   turnUsername: string = 'turnuser';
   turnPassword: string = 'turnpassword';
 
