@@ -1,14 +1,13 @@
 # Go2RTC Configuration for RTSP to WebRTC streaming
 
 # Streams configuration
+# Streams will be added dynamically via the web interface
+# You can also configure static streams here if needed
 streams:
-  # Example camera stream - replace with your camera's RTSP URL
-  camera1:
-    - rtsp://admin:password@192.168.1.100:554/stream1
-
-  # You can add more cameras here
-  # camera2:
-  #   - rtsp://user:pass@192.168.1.101:554/stream
+  # camera1 will be configured via web interface
+  # Or add static stream here:
+  # camera1:
+  #   - rtsp://user:pass@192.168.1.100:554/stream
 
 # WebRTC configuration with TURN support
 webrtc:
@@ -35,6 +34,8 @@ webrtc:
 # API configuration
 api:
   listen: ":1984"
+  # Enable static file serving for web interface
+  static_dir: ""
 
 # RTSP server (optional, for re-streaming)
 rtsp:

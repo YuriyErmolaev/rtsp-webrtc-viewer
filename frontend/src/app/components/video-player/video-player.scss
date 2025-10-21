@@ -4,6 +4,74 @@
   padding: 20px;
 }
 
+// Settings Panel
+.settings-panel {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+  }
+
+  small {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-input {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+  font-family: 'Courier New', monospace;
+
+  &:focus {
+    outline: none;
+    border-color: #2196F3;
+  }
+
+  &:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: #aaa;
+  }
+}
+
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -155,6 +223,16 @@
     }
   }
 
+  .url-display {
+    background-color: #e8e8e8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    word-break: break-all;
+    color: #555;
+  }
+
   .status-connected {
     color: #4CAF50;
     font-weight: 600;
@@ -177,11 +255,33 @@
     padding: 12px;
   }
 
+  .settings-panel {
+    padding: 16px;
+
+    h3 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
   .controls {
     flex-direction: column;
 
     .btn {
       width: 100%;
+    }
+  }
+
+  .stream-info {
+    p {
+      font-size: 12px;
+    }
+
+    .url-display {
+      font-size: 10px;
     }
   }
 }

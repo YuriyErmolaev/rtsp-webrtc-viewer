@@ -1,4 +1,64 @@
 <div class="video-player-container">
+  <!-- Settings Panel -->
+  <div class="settings-panel" *ngIf="showSettings && !isConnected">
+    <h3>Настройки подключения</h3>
+
+    <div class="settings-form">
+      <div class="form-group">
+        <label for="rtspUrl">RTSP URL камеры</label>
+        <input
+          id="rtspUrl"
+          type="text"
+          [(ngModel)]="rtspUrl"
+          placeholder="rtsp://user:pass@192.168.1.100:554/stream"
+          class="form-input"
+          [disabled]="isConnecting"
+        />
+        <small>Формат: rtsp://логин:пароль@IP:порт/путь</small>
+      </div>
+
+      <div class="form-group">
+        <label for="turnUrl">TURN сервер</label>
+        <input
+          id="turnUrl"
+          type="text"
+          [(ngModel)]="turnServerUrl"
+          placeholder="localhost:3478"
+          class="form-input"
+          [disabled]="isConnecting"
+        />
+        <small>Формат: IP:порт (например: 192.168.1.10:3478)</small>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="turnUser">TURN Логин</label>
+          <input
+            id="turnUser"
+            type="text"
+            [(ngModel)]="turnUsername"
+            placeholder="turnuser"
+            class="form-input"
+            [disabled]="isConnecting"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="turnPass">TURN Пароль</label>
+          <input
+            id="turnPass"
+            type="password"
+            [(ngModel)]="turnPassword"
+            placeholder="turnpassword"
+            class="form-input"
+            [disabled]="isConnecting"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Player -->
   <div class="video-wrapper">
     <video
       #videoElement
@@ -21,7 +81,7 @@
             <circle cx="12" cy="12" r="10" stroke-width="2"/>
             <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
           </svg>
-          <p>Нажмите "Подключить" для просмотра</p>
+          <p>Настройте параметры и нажмите "Подключить"</p>
         </div>
 
         <div *ngIf="errorMessage" class="error">
@@ -36,6 +96,7 @@
     </div>
   </div>
 
+  <!-- Controls -->
   <div class="controls">
     <button
       *ngIf="!isConnected"
@@ -55,7 +116,15 @@
     </button>
 
     <button
-      *ngIf="isConnected || errorMessage"
+      *ngIf="isConnected"
+      (click)="toggleSettings()"
+      class="btn btn-secondary"
+    >
+      Настройки
+    </button>
+
+    <button
+      *ngIf="errorMessage"
       (click)="reconnect()"
       class="btn btn-secondary"
     >
@@ -63,8 +132,10 @@
     </button>
   </div>
 
+  <!-- Stream Info -->
   <div class="stream-info">
-    <p><strong>Поток:</strong> {{ streamName }}</p>
+    <p><strong>RTSP:</strong> <code class="url-display">{{ rtspUrl || 'не указан' }}</code></p>
+    <p><strong>TURN:</strong> <code class="url-display">{{ turnServerUrl || 'не указан' }}</code></p>
     <p><strong>Статус:</strong>
       <span [class.status-connected]="isConnected"
             [class.status-disconnected]="!isConnected && !isConnecting"
